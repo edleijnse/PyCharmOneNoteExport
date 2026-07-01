@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import json; nb=json.load\\(open\\(r''C:\\\\Users\\\\edlei\\\\PycharmProjects\\\\PyCharmOneNoteExport\\\\notebook.ipynb''\\)\\); [print\\(i, c[''cell_type'']\\) for i,c in enumerate\\(nb[''cells'']\\)]\")",
+      "WebSearch",
+      "WebFetch(domain:pypi.org)",
+      "WebFetch(domain:github.com)",
+      "Bash(C:/Users/edlei/PycharmProjects/PyCharmOneNoteExport/.venv/Scripts/pip install:*)",
+      "Bash(C:/Users/edlei/PycharmProjects/PyCharmOneNoteExport/.venv/Scripts/python -m pip install aspose-note)",
+      "Bash(C:/Users/edlei/PycharmProjects/PyCharmOneNoteExport/.venv/Scripts/python -c \"import aspose.note as asn; print\\(''OK:'', asn.__name__\\)\")"
+    ]
+  }
+}
