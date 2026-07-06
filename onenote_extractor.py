@@ -55,12 +55,31 @@ def print_pages(pages: list[dict]) -> None:
         print()
 
 
+def write_pages(pages: list[dict], output_file: str) -> None:
+    pad = "  "
+    with open(output_file, "w", encoding="utf-8") as f:
+        for entry in pages:
+            # indent = pad * (entry["level"] - 1)
+            indent = pad
+            f.write("=" * 72 + "\n")
+            f.write(f"{indent}[{entry['section']}] > {entry['page']}\n")
+            f.write("-" * 72 + "\n")
+            if entry["text"]:
+                for line in entry["text"].splitlines():
+                    f.write(f"{indent}  {line}\n")
+            else:
+                f.write(f"{indent}  (no text content)\n")
+            f.write("\n")
+
+
 if __name__ == "__main__":
     import os
 
     ONE_FILE = r"D:\OneNote\Paspoort.one"
+    ONE_FILE_OUTPUT = r"D:\OneNote\Paspoort.one.text"
     section_name = os.path.splitext(os.path.basename(ONE_FILE))[0]
 
     doc = load(ONE_FILE)
     pages = extract_pages(doc, section_name)
     print_pages(pages)
+    write_pages(pages, ONE_FILE_OUTPUT)
