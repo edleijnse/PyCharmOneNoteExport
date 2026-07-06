@@ -1,4 +1,15 @@
+import re
 import aspose.note as asn
+from docx import Document
+
+
+def sanitize_xml_string(s: str) -> str:
+    """Remove characters that are not allowed in XML 1.0."""
+    if not s:
+        return ""
+    # Filter out control characters that are invalid in XML
+    # Valid: #x9, #xA, #xD, [#x20-#xD7FF], [#xE000-#xFFFD], [#x10000-#x10FFFF]
+    return re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]', '', s)
 
 
 def load(one_file: str) -> asn.Document:
@@ -72,14 +83,29 @@ def write_pages(pages: list[dict], output_file: str) -> None:
             f.write("\n")
 
 
+def write_pages_to_doc(pages: list[dict], output_file: str) -> None:
+    doc = Document()
+    for entry in pages:
+        title = sanitize_xml_string(f"[{entry['section']}] > {entry['page']}")
+        doc.add_heading(title, level=1)
+        if entry["text"]:
+            text = sanitize_xml_string(entry["text"])
+            doc.add_paragraph(text)
+        else:
+            doc.add_paragraph("(no text content)")
+    doc.save(output_file)
+
+
 if __name__ == "__main__":
     import os
 
     ONE_FILE = r"D:\OneNote\Paspoort.one"
     ONE_FILE_OUTPUT = r"D:\OneNote\Paspoort.one.text"
+    ONE_FILE_OUTPUT_DOCX = r"D:\OneNote\Paspoort.one.docx"
     section_name = os.path.splitext(os.path.basename(ONE_FILE))[0]
 
     doc = load(ONE_FILE)
     pages = extract_pages(doc, section_name)
     print_pages(pages)
     write_pages(pages, ONE_FILE_OUTPUT)
+    write_pages_to_doc(pages, ONE_FILE_OUTPUT_DOCX)

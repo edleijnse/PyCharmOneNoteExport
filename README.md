@@ -6,9 +6,10 @@ Extracts text from Microsoft OneNote `.one` files without requiring the OneNote 
 
 - Python 3.10+
 - [`aspose-note`](https://pypi.org/project/aspose-note/)
+- [`python-docx`](https://pypi.org/project/python-docx/)
 
 ```
-pip install aspose-note
+pip install aspose-note python-docx
 ```
 
 ## Usage
@@ -28,7 +29,15 @@ import onenote_extractor as one
 
 doc = one.load(r"D:\OneNote\Paspoort.one")
 pages = one.extract_pages(doc, section_name="Paspoort")
+
+# Print to console
 one.print_pages(pages)
+
+# Save to text file
+one.write_pages(pages, "output.txt")
+
+# Save to Word file
+one.write_pages_to_doc(pages, "output.docx")
 ```
 
 ### Output format
@@ -52,6 +61,9 @@ Each page is printed as:
 | `get_page_title(page)` | Reads the title of a single page; returns `"(untitled)"` if absent |
 | `get_page_text(page)` | Concatenates all `RichText` nodes on a page into a single string |
 | `print_pages(pages)` | Pretty-prints the list returned by `extract_pages` |
+| `write_pages(pages, output_file)` | Writes the pages to a plain text file |
+| `write_pages_to_doc(pages, output_file)` | Exports the pages to a Word `.docx` file |
+| `sanitize_xml_string(s)` | Removes characters that are not allowed in XML 1.0 (helper for docx) |
 
 ## Interactive exploration
 
